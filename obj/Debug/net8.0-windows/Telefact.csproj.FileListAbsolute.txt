@@ -1,3 +1,4 @@
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Fonts\Modeseven.ttf
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.exe
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.deps.json
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.runtimeconfig.json
@@ -5,6 +6,7 @@ F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.dll
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.pdb
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.GeneratedMSBuildEditorConfig.editorconfig
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.csproj.CoreCompileInputs.cache
+F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.sourcelink.json
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.dll
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\refint\Telefact.dll
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.pdb
