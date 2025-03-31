@@ -52,14 +52,31 @@ namespace Telefact
             g.DrawString(header.PadRight(cols), teletextFont, Brushes.White, 0, 0);
 
             // Dummy content starting from row 2 (index 1)
+            Color[] colors = new Color[]
+            {
+                TeletextColors.Red,
+                TeletextColors.Green,
+                TeletextColors.Yellow,
+                TeletextColors.Blue,
+                TeletextColors.Magenta,
+                TeletextColors.Cyan,
+                TeletextColors.White
+            };
+
             for (int row = 1; row < rows; row++)
             {
-                string content = $"This is row {row + 1}".PadRight(cols);
+                Color textColor = colors[(row - 1) % colors.Length];
+                using Brush brush = new SolidBrush(textColor);
+
+                string colorName = textColor.Name.ToUpper();
+                string content = $"This is a test in {colorName}".PadRight(cols);
+
                 float x = 0;
                 float y = row * cellHeight;
 
-                g.DrawString(content, teletextFont, Brushes.White, x, y);
+                g.DrawString(content, teletextFont, brush, x, y);
             }
+
         }
     }
 }
