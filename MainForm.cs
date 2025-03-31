@@ -22,12 +22,19 @@ namespace Telefact
         private readonly Color serviceTextColor = TeletextColors.Black;
         private readonly Color serviceBackgroundColor = TeletextColors.Yellow;
 
+        private System.Windows.Forms.Timer clockTimer = new System.Windows.Forms.Timer();
+
         public MainForm()
         {
             InitializeComponent();
             LoadCustomFont();
+
             this.DoubleBuffered = true;
             this.Paint += MainForm_Paint;
+
+            clockTimer.Interval = 1000;
+            clockTimer.Tick += (s, e) => this.Invalidate();
+            clockTimer.Start();
         }
 
         private void LoadCustomFont()
@@ -56,7 +63,7 @@ namespace Telefact
             // === HEADER ===
             string timestamp = DateTime.Now.ToString("MMM dd HH:mm:ss");
 
-            string left = currentPage;
+            string left = "" + currentPage;
             string centerLabel = serviceName;
             string centerPadded = $"  {centerLabel}  ";
             string center = $"{centerPadded} {currentPage}";
@@ -102,9 +109,9 @@ namespace Telefact
                 TeletextColors.White
             };
 
-            for (int row = 1; row < rows; row++)
+            for (int row = 2; row < rows; row++) // Start content from row 3
             {
-                Color textColor = colors[(row - 1) % colors.Length];
+                Color textColor = colors[(row - 2) % colors.Length];
                 using Brush brush = new SolidBrush(textColor);
 
                 string colorName = textColor.Name.ToUpper();
@@ -115,6 +122,14 @@ namespace Telefact
 
                 g.DrawString(content, teletextFont, brush, x, y);
             }
+
+            // === SUBPAGE INDICATOR ===
+            string subpage = "1/3"; // Placeholder
+            int subpageCol = cols - subpage.Length;
+            float subpageX = subpageCol * cellWidth;
+            float subpageY = 1 * cellHeight; // Row directly below header
+
+            g.DrawString(subpage, teletextFont, Brushes.White, subpageX, subpageY);
         }
     }
 }
