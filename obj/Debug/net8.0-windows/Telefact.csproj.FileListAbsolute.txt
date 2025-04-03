@@ -1,12 +1,74 @@
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Fonts\Modeseven.ttf
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\03 solid satin.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\05 frozen steam.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\07 range rover.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\08 swamp fever.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\09 safari so good.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\10 survival.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\11 afro waltz.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\12 sahara sunrise.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\14 heat haze.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\01 - Dave Richmond - Brave New World.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\02 - Brian Bennett - Fresh Appeal.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\03 - Brian Bennett - Shop Around.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\04 - Dave Richmond - The Concrete Jungle.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\05 - Clive Hicks - Campaign.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\06 - Clive Hicks - Waking Up.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Daybreak\07 - Duncan Lamont - The Big Cat.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Drama\07. Transit.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Drama\08. Unknowning Surveillance.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Drama\09. Funky Pusher.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\01 - Alan Hawkshaw - The Millionaires.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\02 - Alan Hawkshaw - Girl in a Sportscar.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\03 - Alan Hawkshaw - First Affair.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\04 - Alan Hawkshaw - Calendar Girl.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\05 - Alan Hawkshaw - Gingerbread.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\06 - Alan Hawkshaw - Centrepoint.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\07 - Alan Hawkshaw - Scooter Girl.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\08 - Alan Hawkshaw - Hastle.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\11 - James Clarke - Never a Dull Moment.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\13 - James Clarke - Once Upon a Holiday.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\14 - James Clarke - Rainbow.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\15 - James Clarke - Fresh Face.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Friendly Faces\16 - James Clarke - Jogalong.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\01 - Brian Bennett - Image.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\02 - Neil Richardson - The Little Orphan.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\03 - David Gold - Paradise Island.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\04 - David Gold - Forbidden Fruit.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\05 - David Gold - The Enchantress.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\06 - David Gold - Phenomena.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\12 - Neil Richardson - Crystal Ball.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Images\13 - Steve Gray - Gliding Through Clouds.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\01 - Brian Bennett - Metropolis Suite, Part 1.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\02 - Brian Bennett - Metropolis Suite, Part 2.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\08 - David Lindup - Grand Slam.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\09 - Dick Doerschuck - 38 Calibre Cut.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\10 - Dick Doerschuck - Grand Central.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\11 - Keith Mansfield - Big Shot.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\12 - Keith Mansfield - Bodyguard.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\13 - David Lindup - Fast Lane.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\14 - David Lindup - Speculation.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\15 - David Lindup - Traffic Flow.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\16 - Laurie Johnson - Chase That Car.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Move with the Time\06 - Alan Hawkshaw - Undergroove.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Move with the Time\13 - Alan Hawkshaw - Here Comes The Blues.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.exe
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.deps.json
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.runtimeconfig.json
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.dll
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.pdb
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.Asio.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.Core.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.Midi.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.Wasapi.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.WinForms.dll
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\NAudio.WinMM.dll
+F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.csproj.AssemblyReference.cache
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.GeneratedMSBuildEditorConfig.editorconfig
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.csproj.CoreCompileInputs.cache
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.sourcelink.json
+F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.csproj.Up2Date
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.dll
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\refint\Telefact.dll
 F:\Development\Teletext\Telefact\obj\Debug\net8.0-windows\Telefact.pdb

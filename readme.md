@@ -11,6 +11,9 @@
 - **Customizable RSS Feed Update Interval**: Set the interval for checking and updating the RSS feed (default: 15 minutes).
 - **Caching**: Stores RSS feed data locally to prevent redundant fetching and improve performance.
 - **Customizable Layout**: Customize font, page layout, and content format.
+- **Background Music Support**: Stream local MP3 files from nested folders under `Assets/Music` with automatic shuffling and debug logging.
+- **Dynamic Subpages**: Paginated stories rotate automatically per user-defined interval.
+- **Debug Logging**: Color-coded console output for easier troubleshooting.
 
 ---
 
