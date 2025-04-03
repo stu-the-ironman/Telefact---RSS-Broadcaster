@@ -1,25 +1,29 @@
+# Changelog
 
 ---
 
-### `CHANGELOG.md`
+## [0.1.7.1] - 2025-04-03
+### Added
+- `EnableMusic` toggle support from `config.json` to allow testing without audio playback.
+- Debug message confirms when music is disabled via config.
 
-```markdown
-# Changelog
+### Changed
+- Updated `ConfigManager` to log warnings if `config.json` is missing, and fallback to defaults.
 
 ---
 
 ## [0.1.7] - 2025-04-03
 ### Added
-- Background music system now plays MP3s from nested subdirectories inside `Assets/Music`
-- Expanded debug logs with clearer labels (e.g., "[MusicManager]") for easier diagnostics
+- Background music system now plays MP3s from nested subdirectories inside `Assets/Music`.
+- Expanded debug logs with clearer labels (e.g., "[MusicManager]") for easier diagnostics.
 
 ### Changed
-- Timestamp in header now correctly appears fully in yellow
-- Improved variable naming in `MainForm` for better code readability
+- Timestamp in header now correctly appears fully in yellow.
+- Improved variable naming in `MainForm` for better code readability.
 
 ### Fixed
-- Subheader is now consistently displayed
-- Fixed previously incorrect timestamp coloring where the first character wasn't styled
+- Subheader is now consistently displayed.
+- Fixed previously incorrect timestamp coloring where the first character wasn't styled.
 
 ---
 

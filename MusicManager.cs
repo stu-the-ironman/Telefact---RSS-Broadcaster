@@ -17,6 +17,13 @@ namespace Telefact
         {
             Console.WriteLine("[MusicManager] DEBUG: Initializing MusicManager...");
 
+            // Check config before continuing
+            if (!ConfigManager.Settings.EnableMusic)
+            {
+                Console.WriteLine("[MusicManager] INFO: Music is disabled via config. Skipping initialization.");
+                return;
+            }
+
             string musicDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Music");
 
             if (!Directory.Exists(musicDirectory))

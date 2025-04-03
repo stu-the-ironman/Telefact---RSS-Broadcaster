@@ -29,7 +29,7 @@ namespace Telefact
         private readonly System.Windows.Forms.Timer subpageTimer = new();
 
         private int currentSubpageIndex = 0;
-        private MusicManager musicManager;
+        private MusicManager? musicManager;
 
         public MainForm()
         {
@@ -39,7 +39,12 @@ namespace Telefact
             LoadCustomFont();
             InitMockPage();
 
-            musicManager = new MusicManager();
+            ConfigManager.LoadConfig("config.json");
+
+            if (ConfigManager.Settings.EnableMusic)
+            {
+                musicManager = new MusicManager();
+            }
 
             DoubleBuffered = true;
             Paint += MainForm_Paint;
@@ -154,10 +159,8 @@ namespace Telefact
             int serviceBackgroundX = serviceStartColumn * cellWidth;
             int serviceBackgroundWidth = serviceBlockLength * cellWidth;
 
-            // Draw background block for service name
             graphics.FillRectangle(new SolidBrush(serviceBackgroundColor), serviceBackgroundX, 0, serviceBackgroundWidth, cellHeight);
 
-            // Draw header characters
             for (int columnIndex = 0; columnIndex < headerLine.Length && columnIndex < cols; columnIndex++)
             {
                 char characterToDraw = headerLine[columnIndex];
@@ -170,17 +173,13 @@ namespace Telefact
                 graphics.DrawString(characterToDraw.ToString(), teletextFont!, fontBrush, xPosition, yPosition);
             }
 
-            // Draw timestamp in yellow
             Brush timestampBrush = new SolidBrush(TeletextColors.Yellow);
-            int timestampLength = timestamp.Length;
-            int timestampStartColumn = cols - timestampLength;
+            int timestampStartColumn = cols - timestamp.Length;
 
-            for (int characterIndex = 0; characterIndex < timestampLength; characterIndex++)
+            for (int characterIndex = 0; characterIndex < timestamp.Length; characterIndex++)
             {
-                char character = timestamp[characterIndex];
                 float xPosition = (timestampStartColumn + characterIndex) * cellWidth;
-                float yPosition = 0;
-                graphics.DrawString(character.ToString(), teletextFont!, timestampBrush, xPosition, yPosition);
+                graphics.DrawString(timestamp[characterIndex].ToString(), teletextFont!, timestampBrush, xPosition, 0);
             }
 
             // === SUBHEADER ===
@@ -194,10 +193,9 @@ namespace Telefact
 
             for (int characterIndex = 0; characterIndex < subheaderText.Length; characterIndex++)
             {
-                char character = subheaderText[characterIndex];
                 float x = (contentSidePadding + characterIndex) * cellWidth;
                 float y = 2 * cellHeight;
-                graphics.DrawString(character.ToString(), teletextFont, Brushes.White, x, y);
+                graphics.DrawString(subheaderText[characterIndex].ToString(), teletextFont!, Brushes.White, x, y);
             }
 
             RenderDashLine(graphics, dashLine, 3 * cellHeight);
@@ -213,9 +211,8 @@ namespace Telefact
 
                 for (int columnIndex = 0; columnIndex < rowContent.Length; columnIndex++)
                 {
-                    char character = rowContent[columnIndex];
                     float charX = x + columnIndex * cellWidth;
-                    graphics.DrawString(character.ToString(), teletextFont, Brushes.White, charX, y);
+                    graphics.DrawString(rowContent[columnIndex].ToString(), teletextFont!, Brushes.White, charX, y);
                 }
             }
         }
@@ -224,9 +221,8 @@ namespace Telefact
         {
             for (int columnIndex = 0; columnIndex < dashLine.Length && columnIndex < cols; columnIndex++)
             {
-                char character = dashLine[columnIndex];
                 float x = columnIndex * cellWidth;
-                graphics.DrawString(character.ToString(), teletextFont, Brushes.White, x, yPosition);
+                graphics.DrawString(dashLine[columnIndex].ToString(), teletextFont!, Brushes.White, x, yPosition);
             }
         }
     }

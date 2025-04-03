@@ -12,6 +12,7 @@
 - **Caching**: Stores RSS feed data locally to prevent redundant fetching and improve performance.
 - **Customizable Layout**: Customize font, page layout, and content format.
 - **Background Music Support**: Stream local MP3 files from nested folders under `Assets/Music` with automatic shuffling and debug logging.
+- **Music Toggle**: Disable music playback using a boolean setting in `config.json` (`"EnableMusic": false`).
 - **Dynamic Subpages**: Paginated stories rotate automatically per user-defined interval.
 - **Debug Logging**: Color-coded console output for easier troubleshooting.
 
@@ -21,4 +22,4 @@
 
 1. Clone this repository to your local machine:
    ```bash
-   git clone https://github.com/yourusername/telefact.git
+   git clone https://github.com/stu-the-ironman/Telefact---RSS-Broadcaster.git
