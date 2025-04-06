@@ -1,4 +1,4 @@
-F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Fonts\Modeseven.ttf
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Fonts\Modeseven.ttf
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\03 solid satin.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\05 frozen steam.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\07 range rover.mp3
