@@ -1,4 +1,4 @@
-# Telefact - Teletext Broadcaster
+# Telefact - Teletext RSS Broadcaster
 
 **Telefact** is a modern Teletext broadcaster that emulates classic Teletext services, displaying text-only news from RSS feeds and static pages. It uses a 40x24 Teletext format and allows for both dynamic and static page creation. You can customize the background, colors, and page behavior.
 
