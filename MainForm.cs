@@ -1,229 +1,70 @@
 using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Text;
-using System.IO;
-using System.Linq;
 using System.Windows.Forms;
+using Telefact.Config;
+using Telefact.Music;
+using Telefact.Rendering;
 
 namespace Telefact
 {
     public partial class MainForm : Form
     {
-        private readonly PrivateFontCollection fontCollection = new();
-        private Font? teletextFont;
-        private TeletextPage mockPage = null!;
-
-        private readonly int cols = 40;
-        private readonly int rows = 24;
-        private readonly int cellWidth = 20;
-        private readonly int cellHeight = 25;
-        private readonly int contentSidePadding = 1;
-
-        private readonly string currentPage = "P100";
-        private readonly string serviceName = "Telefact";
-        private readonly Color serviceTextColor = TeletextColors.Yellow;
-        private readonly Color serviceBackgroundColor = TeletextColors.Red;
-
-        private readonly System.Windows.Forms.Timer clockTimer = new();
-        private readonly System.Windows.Forms.Timer subpageTimer = new();
-
-        private int currentSubpageIndex = 0;
+        private ConfigSettings config;
         private MusicManager? musicManager;
+        private Renderer renderer;
+        private System.Windows.Forms.Timer renderTimer;
 
         public MainForm()
         {
             InitializeComponent();
-            Console.WriteLine("[MainForm] DEBUG: MainForm initialized.");
+            Console.WriteLine("[MainForm] DEBUG: Initializing MainForm...");
 
-            LoadCustomFont();
-            InitMockPage();
+            // Load configuration
+            ConfigManager.LoadConfig();
+            config = ConfigManager.Settings;
 
-            ConfigManager.LoadConfig("config.json");
+            // Define Teletext grid dimensions (can be retrieved from config or set explicitly)
+            int cellWidth = config.CellWidth; // Retrieve from config
+            int cellHeight = config.CellHeight; // Retrieve from config
 
-            if (ConfigManager.Settings.EnableMusic)
+            // Initialize Effects
+            var effects = new Effects(
+                config.Effects,
+                cols: 40, // Number of columns
+                rows: 24, // Number of rows
+                cellWidth: cellWidth,
+                cellHeight: cellHeight
+            );
+
+            // Initialize Renderer with configurable cell dimensions
+            renderer = new Renderer(config, effects, cellWidth, cellHeight);
+
+            // Initialize MusicManager if music is enabled
+            if (config.EnableMusic)
             {
-                musicManager = new MusicManager();
-            }
-
-            DoubleBuffered = true;
-            Paint += MainForm_Paint;
-
-            clockTimer.Interval = 1000 / 60;
-            clockTimer.Tick += ClockTimer_Tick;
-            clockTimer.Start();
-
-            subpageTimer.Interval = 5000;
-            subpageTimer.Tick += SubpageTimer_Tick;
-            subpageTimer.Start();
-        }
-
-        private void LoadCustomFont()
-        {
-            string fontPath = Path.Combine(Application.StartupPath, "Fonts", "Modeseven.ttf");
-            if (File.Exists(fontPath))
-            {
-                fontCollection.AddFontFile(fontPath);
-                teletextFont = new Font(fontCollection.Families[0], 20, FontStyle.Regular);
+                Console.WriteLine("[MainForm] DEBUG: Music is enabled, initializing MusicManager...");
+                musicManager = new MusicManager(config);
+                musicManager.Play();
             }
             else
             {
-                MessageBox.Show("Modeseven.ttf not found. Falling back to Courier New.");
-                teletextFont = new Font("Courier New", 20, FontStyle.Regular);
+                Console.WriteLine("[MainForm] DEBUG: Music is disabled via config.");
             }
+
+            // Enable double buffering for smoother rendering
+            DoubleBuffered = true;
+
+            // Initialize and start the render timer
+            renderTimer = new System.Windows.Forms.Timer();
+            renderTimer.Interval = 33; // ~30 FPS || 16ms for 60 FPS
+            renderTimer.Tick += (s, e) => Invalidate();
+            renderTimer.Start();
         }
 
-        private void InitMockPage()
+        protected override void OnPaint(PaintEventArgs e)
         {
-            string longStory = @"Teletext was a broadcast information service in the UK that began in the 1970s and became a staple of television culture. It provided news, weather, sports results, and TV listings through numbered pages. It was eventually discontinued, but its legacy lives on in modern digital services and retro fan projects like this one.";
-
-            var words = longStory.Split(' ');
-            var lines = new List<string>();
-            string currentLine = "";
-
-            foreach (string word in words)
-            {
-                if ((currentLine + " " + word).Trim().Length > (cols - 2 * contentSidePadding))
-                {
-                    lines.Add(currentLine.Trim().PadRight(cols));
-                    currentLine = word;
-                }
-                else
-                {
-                    currentLine += " " + word;
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(currentLine))
-                lines.Add(currentLine.Trim().PadRight(cols));
-
-            var subpages = new List<List<string>>();
-            for (int i = 0; i < lines.Count; i += (rows - 4))
-                subpages.Add(lines.Skip(i).Take(rows - 4).ToList());
-
-            mockPage = new TeletextPage
-            {
-                PageNumber = 100,
-                Subpages = subpages
-            };
-        }
-
-        private void SubpageTimer_Tick(object? senderObject, EventArgs eventArguments)
-        {
-            if (mockPage.Subpages.Count > 1)
-            {
-                currentSubpageIndex = (currentSubpageIndex + 1) % mockPage.Subpages.Count;
-                Invalidate();
-            }
-        }
-
-        private void ClockTimer_Tick(object? senderObject, EventArgs eventArguments)
-        {
-            Invalidate();
-        }
-
-        private void MainForm_Paint(object? senderObject, PaintEventArgs paintEventArguments)
-        {
-            if (teletextFont == null)
-            {
-                MessageBox.Show("Font failed to load.");
-                return;
-            }
-
-            Graphics graphics = paintEventArguments.Graphics;
-            graphics.Clear(TeletextColors.Black);
-            graphics.TextRenderingHint = TextRenderingHint.SingleBitPerPixelGridFit;
-
-            // === HEADER ===
-            string timestamp = DateTime.Now.ToString("MMM dd HH:mm:ss");
-            string pageLabelLeft = " P100";
-            string currentPageNumberOnly = "100";
-            string paddedServiceName = $"  {serviceName}  ";
-            string centerBlock = $"{paddedServiceName} {currentPageNumberOnly}";
-
-            int totalAvailableSpace = cols - (pageLabelLeft.Length + timestamp.Length);
-            int leftPadding = 0;
-            int rightPadding = 0;
-
-            if (centerBlock.Length < totalAvailableSpace)
-            {
-                int remainingSpace = totalAvailableSpace - centerBlock.Length;
-                leftPadding = remainingSpace / 2;
-                rightPadding = remainingSpace - leftPadding;
-            }
-
-            string headerLine = pageLabelLeft + new string(' ', leftPadding) + centerBlock + new string(' ', rightPadding);
-
-            int serviceStartColumn = pageLabelLeft.Length + leftPadding;
-            int serviceBlockLength = paddedServiceName.Length;
-            int serviceBackgroundX = serviceStartColumn * cellWidth;
-            int serviceBackgroundWidth = serviceBlockLength * cellWidth;
-
-            graphics.FillRectangle(new SolidBrush(serviceBackgroundColor), serviceBackgroundX, 0, serviceBackgroundWidth, cellHeight);
-
-            for (int columnIndex = 0; columnIndex < headerLine.Length && columnIndex < cols; columnIndex++)
-            {
-                char characterToDraw = headerLine[columnIndex];
-                float xPosition = columnIndex * cellWidth;
-                float yPosition = 0;
-
-                bool isInServiceBlock = (columnIndex >= serviceStartColumn) && (columnIndex < serviceStartColumn + serviceBlockLength);
-                Brush fontBrush = isInServiceBlock ? new SolidBrush(serviceTextColor) : Brushes.White;
-
-                graphics.DrawString(characterToDraw.ToString(), teletextFont!, fontBrush, xPosition, yPosition);
-            }
-
-            Brush timestampBrush = new SolidBrush(TeletextColors.Yellow);
-            int timestampStartColumn = cols - timestamp.Length;
-
-            for (int characterIndex = 0; characterIndex < timestamp.Length; characterIndex++)
-            {
-                float xPosition = (timestampStartColumn + characterIndex) * cellWidth;
-                graphics.DrawString(timestamp[characterIndex].ToString(), teletextFont!, timestampBrush, xPosition, 0);
-            }
-
-            // === SUBHEADER ===
-            string dashLine = new string('-', cols);
-            RenderDashLine(graphics, dashLine, 1 * cellHeight);
-
-            string subheaderText = "Subheader Text Here";
-            int availableSubheaderSpace = cols - (contentSidePadding * 2);
-            int subheaderPadding = (availableSubheaderSpace - subheaderText.Length) / 2;
-            subheaderText = subheaderText.PadLeft(subheaderText.Length + subheaderPadding);
-
-            for (int characterIndex = 0; characterIndex < subheaderText.Length; characterIndex++)
-            {
-                float x = (contentSidePadding + characterIndex) * cellWidth;
-                float y = 2 * cellHeight;
-                graphics.DrawString(subheaderText[characterIndex].ToString(), teletextFont!, Brushes.White, x, y);
-            }
-
-            RenderDashLine(graphics, dashLine, 3 * cellHeight);
-
-            // === CONTENT ===
-            var content = mockPage.Subpages[currentSubpageIndex];
-            for (int rowIndex = 0; rowIndex < content.Count && rowIndex < (rows - 4); rowIndex++)
-            {
-                float y = (rowIndex + 4) * cellHeight;
-                float x = contentSidePadding * cellWidth;
-
-                string rowContent = content[rowIndex].PadRight(cols - contentSidePadding * 2);
-
-                for (int columnIndex = 0; columnIndex < rowContent.Length; columnIndex++)
-                {
-                    float charX = x + columnIndex * cellWidth;
-                    graphics.DrawString(rowContent[columnIndex].ToString(), teletextFont!, Brushes.White, charX, y);
-                }
-            }
-        }
-
-        private void RenderDashLine(Graphics graphics, string dashLine, float yPosition)
-        {
-            for (int columnIndex = 0; columnIndex < dashLine.Length && columnIndex < cols; columnIndex++)
-            {
-                float x = columnIndex * cellWidth;
-                graphics.DrawString(dashLine[columnIndex].ToString(), teletextFont!, Brushes.White, x, yPosition);
-            }
+            base.OnPaint(e);
+            renderer.Render(e.Graphics, ClientSize);
         }
     }
 }

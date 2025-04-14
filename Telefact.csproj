@@ -7,14 +7,14 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
-    <!-- Suppress both warnings -->
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <NoWarn>CA1416;NETSDK1137</NoWarn>
+    <Version>0.1.10</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Fonts\Modeseven.ttf">
+    <Content Include="Assets\Fonts\Modeseven.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -28,12 +28,5 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-
-  <ItemGroup>
-  <None Update="config.json">
-    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-  </None>
-</ItemGroup>
-
 
 </Project>

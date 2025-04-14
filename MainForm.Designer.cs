@@ -11,7 +11,7 @@ namespace Telefact
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Teletext";
+            this.Text = "Telefact";
             this.BackColor = TeletextColors.Black; // Set background color
             this.ResumeLayout(false);
         }

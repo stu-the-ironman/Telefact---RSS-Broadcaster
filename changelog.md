@@ -2,6 +2,11 @@
 
 ---
 
+## [0.1.10]
+- New changes
+
+---
+
 ## [0.1.7.1] - 2025-04-03
 ### Added
 - `EnableMusic` toggle support from `config.json` to allow testing without audio playback.
@@ -9,6 +14,52 @@
 
 ### Changed
 - Updated `ConfigManager` to log warnings if `config.json` is missing, and fallback to defaults.
+
+---
+
+## [0.1.10] - 2025-04-14
+### Added
+- Background music system now plays MP3s from nested subdirectories inside `Assets/Music`.
+- Expanded debug logs with clearer labels (e.g., "[MusicManager]") for easier diagnostics.
+
+### Changed
+- Timestamp in header now correctly appears fully in yellow.
+- Improved variable naming in `MainForm` for better code readability.
+
+### Fixed
+- Added a line of padding between the header and the content text for better readability.
+
+### Changed
+- Updated the header format to dynamically space sections (`pageNumber`, `serviceName`, `pageIndicator`, and `timestamp`) to resemble the Teletext format.
+
+---
+
+## [0.1.9] - 2025-04-14
+### Added
+- Configurable `cellWidth` and `cellHeight` for Teletext standards.
+- New visual effects: static, scanlines, banding flicker, and rolling scanline.
+- Support for dynamic font loading from `Assets/Fonts`.
+
+### Changed
+- Refactored `Renderer` to use configurable grid dimensions.
+- Improved `Effects` class to modularize visual effects logic.
+
+### Fixed
+- Resolved duplicate `Compile` item issue in the `.csproj` file.
+- Fixed missing methods in `Effects` and properties in `ConfigSettings`.
+
+---
+
+## [0.1.8] - 2025-04-13
+### Added
+- Modular `Renderer` with support for header/footer rendering.
+- Grid-aligned layout for consistent Teletext rendering.
+
+### Changed
+- Improved layout logic for better alignment with Teletext standards.
+
+### Fixed
+- Resolved layout inconsistencies in the header/footer.
 
 ---
 
