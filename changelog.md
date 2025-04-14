@@ -7,6 +7,15 @@
 
 ---
 
+## [0.1.10] - 2025-04-14
+### Added
+- Added a line of padding between the header and the content text for better readability.
+
+### Changed
+- Updated the header format to dynamically space sections (`pageNumber`, `serviceName`, `pageIndicator`, and `timestamp`) to resemble the Teletext format.
+
+---
+
 ## [0.1.9] - 2025-04-14
 ### Added
 - Configurable `cellWidth` and `cellHeight` for Teletext standards.
@@ -33,22 +42,6 @@
 
 ### Fixed
 - Resolved layout inconsistencies in the header/footer.
-
----
-
-## [0.1.8] - 2025-04-14
-### Added
-- Configurable `cellWidth` and `cellHeight` for Teletext standards.
-- New visual effects: static, scanlines, banding flicker, and rolling scanline.
-- Support for dynamic font loading from `Assets/Fonts`.
-
-### Changed
-- Refactored `Renderer` to use configurable grid dimensions.
-- Improved `Effects` class to modularize visual effects logic.
-
-### Fixed
-- Resolved duplicate `Compile` item issue in the `.csproj` file.
-- Fixed missing methods in `Effects` and properties in `ConfigSettings`.
 
 ---
 

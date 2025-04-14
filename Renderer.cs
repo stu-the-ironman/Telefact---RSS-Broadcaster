@@ -28,6 +28,7 @@ namespace Telefact.Rendering
         private readonly int topMargin = 18;
 
         private int rollingScanlineY = 0;
+        private int frameCount = 0;
 
         public Renderer(ConfigSettings config, Effects effects, int cellWidth, int cellHeight)
         {
@@ -53,59 +54,74 @@ namespace Telefact.Rendering
 
         public void Render(Graphics g, Size clientSize)
         {
+            // Clear the screen with a black background
             g.Clear(Color.Black);
 
-            int totalGridWidth = (pageWidth + leftPadding + rightPadding) * cellWidth;
-            int startX = (clientSize.Width - totalGridWidth) / 2;
+            // Draw the Teletext header
+            DrawTeletextHeader(g, startX: 0);
 
-            // Visual effects first
+            // Draw the Teletext content with padding below the header
+            DrawContent(g, startX: 0, startY: topMargin + (2 * cellHeight)); // Add one line of padding
+
+            // Draw the Teletext footer
+            DrawTeletextFooter(g, startX: 0, clientHeight: clientSize.Height);
+
+            // Apply visual effects (AFTER text and background are drawn)
             effects.ApplyStaticEffect(g, clientSize.Width, clientSize.Height);
             effects.ApplyScanlinesEffect(g, clientSize.Width, clientSize.Height);
-            effects.ApplyBandingFlickerEffect(g, clientSize.Width, clientSize.Height);
+            effects.ApplyBandingFlickerEffect(g, clientSize.Width, clientSize.Height, frameCount);
             effects.ApplyRollingScanlineEffect(g, clientSize.Width, clientSize.Height, ref rollingScanlineY);
 
-            // UI layers
-            DrawTeletextHeader(g, startX);
-            DrawContent(g, startX, topMargin + cellHeight * 2);
-            DrawTeletextFooter(g, startX, clientSize.Height);
+            // Increment frame count for flicker effect
+            frameCount++;
         }
 
         private void DrawTeletextHeader(Graphics g, int startX)
         {
-            string pageNumber = "  " + "P100";
-            string serviceName = "Telefact";
-            string paddedService = $"  {serviceName}  ";
-            string timestamp = DateTime.Now.ToString(" " + "MMM dd HH:mm:ss");
+            string pageNumber = "  P100";
+            string serviceName = "  Telefact  ";
+            string pageIndicator = "100";
+            string timestamp = DateTime.Now.ToString("MMM dd HH:mm:ss");
 
             int fullWidth = pageWidth + leftPadding + rightPadding;
-            int gap = 2;
 
-            int pnWidth = pageNumber.Length;
-            int svcWidth = paddedService.Length;
-            int tsWidth = timestamp.Length;
+            // Calculate the total width of all text sections
+            int totalTextWidth = pageNumber.Length + serviceName.Length + pageIndicator.Length + timestamp.Length;
 
-            int totalOccupied = pnWidth + svcWidth + tsWidth + (2 * gap);
-            int svcStart = (fullWidth - totalOccupied) / 2 + pnWidth + gap;
-            int tsStart = svcStart + svcWidth + gap;
+            // Calculate the remaining space for gaps
+            int totalGaps = 3; // Gaps between pageNumber, serviceName, pageIndicator, and timestamp
+            int gapWidth = (fullWidth - totalTextWidth) / totalGaps;
+
+            // Calculate starting positions for each section
+            int pageNumberStart = 0;
+            int serviceNameStart = pageNumberStart + pageNumber.Length + gapWidth;
+            int pageIndicatorStart = serviceNameStart + serviceName.Length + gapWidth;
+            int timestampStart = pageIndicatorStart + pageIndicator.Length + gapWidth;
 
             for (int i = 0; i < fullWidth; i++)
             {
                 float x = startX + (i * cellWidth);
                 float y = topMargin;
 
-                if (i < pnWidth)
+                if (i >= pageNumberStart && i < pageNumberStart + pageNumber.Length)
                 {
-                    SafeDrawString(g, pageNumber[i].ToString(), font, pageNumberBrush, x, y);
+                    int idx = i - pageNumberStart;
+                    SafeDrawString(g, pageNumber[idx].ToString(), font, pageNumberBrush, x, y);
                 }
-                else if (i >= svcStart && i < svcStart + svcWidth)
+                else if (i >= serviceNameStart && i < serviceNameStart + serviceName.Length)
                 {
-                    int idx = i - svcStart;
+                    int idx = i - serviceNameStart;
                     g.FillRectangle(serviceBackgroundBrush, x, y, cellWidth, cellHeight);
-                    SafeDrawString(g, paddedService[idx].ToString(), font, serviceBrush, x, y);
+                    SafeDrawString(g, serviceName[idx].ToString(), font, serviceBrush, x, y);
                 }
-                else if (i >= tsStart && i < tsStart + tsWidth)
+                else if (i >= pageIndicatorStart && i < pageIndicatorStart + pageIndicator.Length)
                 {
-                    int idx = i - tsStart;
+                    int idx = i - pageIndicatorStart;
+                    SafeDrawString(g, pageIndicator[idx].ToString(), font, pageNumberBrush, x, y);
+                }
+                else if (i >= timestampStart && i < timestampStart + timestamp.Length)
+                {
+                    int idx = i - timestampStart;
                     SafeDrawString(g, timestamp[idx].ToString(), font, timestampBrush, x, y);
                 }
                 else

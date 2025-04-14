@@ -18,6 +18,11 @@ namespace Telefact
         // Define staticPixels
         private readonly Color[,] staticPixels;
 
+        // Customizable variables
+        public int RollingScanlineSpeed { get; set; } = 2; // Default speed for rolling scanlines
+        public int BandingFlickerSpeed { get; set; } = 30; // Default interval for banding flicker
+        public int StaticScanlineSpacing { get; set; } = 4; // Default spacing for static scanlines
+
         public Effects(EffectSettings settings, int cols, int rows, int cellWidth, int cellHeight)
         {
             Console.WriteLine("[Effects] DEBUG: Constructor called.");
@@ -64,19 +69,20 @@ namespace Telefact
 
         public void ApplyScanlinesEffect(Graphics g, int width, int height)
         {
-            // Example implementation for scanlines effect
+            // Example implementation for static scanlines effect
             using (Brush brush = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
             {
-                for (int y = 0; y < height; y += 4) // Adjust spacing as needed
+                for (int y = 0; y < height; y += StaticScanlineSpacing) // Use customizable spacing
                 {
                     g.FillRectangle(brush, 0, y, width, 2); // Draw scanlines
                 }
             }
         }
 
-        public void ApplyBandingFlickerEffect(Graphics g, int width, int height)
+        public void ApplyBandingFlickerEffect(Graphics g, int width, int height, int frameCount)
         {
             // Example implementation for banding flicker effect
+            if (frameCount % BandingFlickerSpeed != 0) return; // Control flicker speed
             using (Brush brush = new SolidBrush(Color.FromArgb(50, 255, 255, 255)))
             {
                 int bandHeight = _random.Next(10, 30); // Random band height
@@ -92,7 +98,7 @@ namespace Telefact
             {
                 g.FillRectangle(brush, 0, rollingY, width, 2); // Draw rolling scanline
             }
-            rollingY = (rollingY + 2) % height; // Move scanline down
+            rollingY = (rollingY + RollingScanlineSpeed) % height; // Use customizable speed
         }
     }
 }
