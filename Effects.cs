@@ -1,5 +1,6 @@
 using System;
 using System.Drawing;
+using Telefact.Config;
 
 namespace Telefact
 {
@@ -10,95 +11,88 @@ namespace Telefact
         private readonly int _rows;
         private readonly int _cellWidth;
         private readonly int _cellHeight;
-        private readonly int _refreshRate;
 
         private readonly Random _random = new Random();
+        private static readonly int StaticAlpha = 128;
 
-        public Effects(EffectSettings settings, int cols, int rows, int cellWidth, int cellHeight, int refreshRate)
+        // Define staticPixels
+        private readonly Color[,] staticPixels;
+
+        public Effects(EffectSettings settings, int cols, int rows, int cellWidth, int cellHeight)
         {
+            Console.WriteLine("[Effects] DEBUG: Constructor called.");
             _settings = settings;
             _cols = cols;
             _rows = rows;
             _cellWidth = cellWidth;
             _cellHeight = cellHeight;
-            _refreshRate = refreshRate;
+
+            staticPixels = new Color[cols, rows];
+            UpdateStaticPixels(); // Initial fill
         }
 
-        private Color[,] staticPixels;
-        private DateTime lastStaticUpdate;
-        private readonly TimeSpan staticUpdateInterval = TimeSpan.FromSeconds(1); // Update interval for static effect
-
-        // Apply static effect method (overlay static effect on top of the content)
-        public void ApplyStaticEffect(Graphics g)
-        {
-            if (!_settings.StaticEnabled) return;
-
-            // Update static effect at regular intervals
-            if (DateTime.Now - lastStaticUpdate > staticUpdateInterval)
-            {
-                UpdateStaticPixels();
-                lastStaticUpdate = DateTime.Now;
-            }
-
-            // Iterate through the rows and columns of the grid to render static as an overlay
-            for (int y = 0; y < _rows; y++)
-            {
-                for (int x = 0; x < _cols; x++)
-                {
-                    // Get the color for this grid cell
-                    Color staticColor = staticPixels[x, y];
-
-                    // Only draw static where we have assigned a color
-                    if (staticColor != Color.Empty)
-                    {
-                        // Semi-transparent brush for static effect
-                        Brush brush = new SolidBrush(Color.FromArgb(128, staticColor));
-                        g.FillRectangle(brush, x * _cellWidth, y * _cellHeight, _cellWidth, _cellHeight);
-                    }
-                }
-            }
-        }
-
-        // Method to update the static effect at regular intervals
+        // Implement UpdateStaticPixels
         private void UpdateStaticPixels()
         {
-            staticPixels = new Color[_cols, _rows];
-
-            // Randomly assign colors to the static pixels with the specified static strength
-            for (int y = 0; y < _rows; y++)
+            for (int x = 0; x < _cols; x++)
             {
-                for (int x = 0; x < _cols; x++)
+                for (int y = 0; y < _rows; y++)
                 {
-                    if (_random.NextDouble() < _settings.StaticStrength)
-                    {
-                        // Random color for static
-                        staticPixels[x, y] = Color.FromArgb(_random.Next(255), _random.Next(255), _random.Next(255));
-                    }
-                    else
-                    {
-                        staticPixels[x, y] = Color.Empty; // No static for this cell
-                    }
+                    staticPixels[x, y] = Color.FromArgb(
+                        StaticAlpha,
+                        _random.Next(256),
+                        _random.Next(256),
+                        _random.Next(256)
+                    );
                 }
             }
         }
 
-        // Apply scanline effect method
-        public void ApplyScanlinesEffect(Graphics g)
+        public void ApplyStaticEffect(Graphics g, int width, int height)
         {
-            if (!_settings.ScanlinesEnabled) return;
-
-            // Define the strength of the scanline
-            int scanlineHeight = (int)(_cellHeight * _settings.ScanlineStrength);
-
-            for (int y = 0; y < _rows; y++)
+            // Example implementation for static effect
+            for (int i = 0; i < 100; i++) // Adjust particle count as needed
             {
-                // Apply scanline on every other row
-                if (y % 2 == 0)
+                int x = _random.Next(width);
+                int y = _random.Next(height);
+                using (Brush brush = new SolidBrush(Color.FromArgb(128, _random.Next(256), _random.Next(256), _random.Next(256))))
                 {
-                    Brush brush = new SolidBrush(Color.FromArgb(50, 0, 0, 0)); // Darker scanline color
-                    g.FillRectangle(brush, 0, y * _cellHeight, _cols * _cellWidth, scanlineHeight);
+                    g.FillRectangle(brush, x, y, 2, 2); // Draw small static particles
                 }
             }
+        }
+
+        public void ApplyScanlinesEffect(Graphics g, int width, int height)
+        {
+            // Example implementation for scanlines effect
+            using (Brush brush = new SolidBrush(Color.FromArgb(40, 0, 0, 0)))
+            {
+                for (int y = 0; y < height; y += 4) // Adjust spacing as needed
+                {
+                    g.FillRectangle(brush, 0, y, width, 2); // Draw scanlines
+                }
+            }
+        }
+
+        public void ApplyBandingFlickerEffect(Graphics g, int width, int height)
+        {
+            // Example implementation for banding flicker effect
+            using (Brush brush = new SolidBrush(Color.FromArgb(50, 255, 255, 255)))
+            {
+                int bandHeight = _random.Next(10, 30); // Random band height
+                int bandY = _random.Next(0, height - bandHeight);
+                g.FillRectangle(brush, 0, bandY, width, bandHeight);
+            }
+        }
+
+        public void ApplyRollingScanlineEffect(Graphics g, int width, int height, ref int rollingY)
+        {
+            // Example implementation for rolling scanline effect
+            using (Brush brush = new SolidBrush(Color.FromArgb(50, 255, 255, 255)))
+            {
+                g.FillRectangle(brush, 0, rollingY, width, 2); // Draw rolling scanline
+            }
+            rollingY = (rollingY + 2) % height; // Move scanline down
         }
     }
 }

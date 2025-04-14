@@ -490,7 +490,7 @@
     "C:\\Users\\stuth\\.nuget\\packages\\": {}
   },
   "project": {
-    "version": "1.0.0",
+    "version": "0.1.9",
     "restore": {
       "projectUniqueName": "F:\\Development\\Teletext\\Telefact\\Telefact.csproj",
       "projectName": "Telefact",

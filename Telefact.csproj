@@ -7,10 +7,10 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-
-    <!-- Suppress both warnings -->
+    <EnableDefaultCompileItems>true</EnableDefaultCompileItems> <!-- Use implicit inclusion -->
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <NoWarn>CA1416;NETSDK1137</NoWarn>
+    <Version>0.1.9</Version> <!-- Updated version -->
   </PropertyGroup>
 
   <ItemGroup>

@@ -1,4 +1,3 @@
-
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -10,24 +9,32 @@ namespace Telefact.Rendering
     public class Renderer
     {
         private readonly ConfigSettings config;
+        private readonly Effects effects;
         private readonly Font font;
-        private readonly PrivateFontCollection fontCollection; // To keep font alive
+        private readonly PrivateFontCollection? fontCollection; // To keep font alive
+
         private readonly Brush defaultBrush = Brushes.White;
         private readonly Brush serviceBrush = Brushes.Yellow;
         private readonly Brush serviceBackgroundBrush = Brushes.Red;
         private readonly Brush timestampBrush = Brushes.Yellow;
         private readonly Brush pageNumberBrush = Brushes.White;
         private readonly Brush contentBrush = Brushes.Cyan;
-        private readonly int cellWidth = 20;
-        private readonly int cellHeight = 26;
+
+        private readonly int cellWidth;
+        private readonly int cellHeight;
         private readonly int pageWidth = 38; // visible characters, padding excluded
         private readonly int leftPadding = 1;
         private readonly int rightPadding = 1;
         private readonly int topMargin = 18;
 
-        public Renderer(ConfigSettings config)
+        private int rollingScanlineY = 0;
+
+        public Renderer(ConfigSettings config, Effects effects, int cellWidth, int cellHeight)
         {
             this.config = config;
+            this.effects = effects;
+            this.cellWidth = cellWidth;
+            this.cellHeight = cellHeight;
 
             try
             {
@@ -44,42 +51,24 @@ namespace Telefact.Rendering
             }
         }
 
-        private List<string> WrapTextToLines(string text, int maxLineLength)
-        {
-            List<string> lines = new();
-            string[] words = text.Split(' ');
-            string currentLine = "";
-
-            foreach (string word in words)
-            {
-                if ((currentLine.Length + word.Length + 1) <= maxLineLength)
-                {
-                    currentLine += (currentLine.Length > 0 ? " " : "") + word;
-                }
-                else
-                {
-                    lines.Add(currentLine.PadRight(maxLineLength));
-                    currentLine = word;
-                }
-            }
-
-            if (!string.IsNullOrWhiteSpace(currentLine))
-                lines.Add(currentLine.PadRight(maxLineLength));
-
-            return lines;
-        }
-
         public void Render(Graphics g, Size clientSize)
         {
             g.Clear(Color.Black);
+
             int totalGridWidth = (pageWidth + leftPadding + rightPadding) * cellWidth;
             int startX = (clientSize.Width - totalGridWidth) / 2;
 
+            // Visual effects first
+            effects.ApplyStaticEffect(g, clientSize.Width, clientSize.Height);
+            effects.ApplyScanlinesEffect(g, clientSize.Width, clientSize.Height);
+            effects.ApplyBandingFlickerEffect(g, clientSize.Width, clientSize.Height);
+            effects.ApplyRollingScanlineEffect(g, clientSize.Width, clientSize.Height, ref rollingScanlineY);
+
+            // UI layers
             DrawTeletextHeader(g, startX);
             DrawContent(g, startX, topMargin + cellHeight * 2);
             DrawTeletextFooter(g, startX, clientSize.Height);
         }
-
 
         private void DrawTeletextHeader(Graphics g, int startX)
         {
@@ -151,28 +140,49 @@ namespace Telefact.Rendering
             int contentStartColumn = leftPadding;
             int contentEndColumn = contentStartColumn + pageWidth;
 
-            // Calculate Y position for the final row
             int rowIndex = (clientHeight - topMargin) / cellHeight - 1;
             float y = topMargin + (rowIndex * cellHeight);
 
-            // Draw background only inside the content area (excluding padding)
             for (int col = contentStartColumn; col < contentEndColumn; col++)
             {
                 float x = startX + (col * cellWidth);
                 g.FillRectangle(Brushes.White, x, y, cellWidth, cellHeight);
             }
 
-            // Footer text, shifted 1 cell inside the content area
             string footerText = $"Footer Line - Row {rowIndex}";
             Brush footerBrush = Brushes.Red;
-
-            int textStartColumn = contentStartColumn + 1; // 1 cell padding inside content area
+            int textStartColumn = contentStartColumn + 1;
 
             for (int i = 0; i < footerText.Length && (textStartColumn + i) < contentEndColumn; i++)
             {
                 float x = startX + ((textStartColumn + i) * cellWidth);
-                g.DrawString(footerText[i].ToString(), font, footerBrush, x, y);
+                SafeDrawString(g, footerText[i].ToString(), font, footerBrush, x, y);
             }
+        }
+
+        private List<string> WrapTextToLines(string text, int maxLineLength)
+        {
+            List<string> lines = new();
+            string[] words = text.Split(' ');
+            string currentLine = "";
+
+            foreach (string word in words)
+            {
+                if ((currentLine.Length + word.Length + 1) <= maxLineLength)
+                {
+                    currentLine += (currentLine.Length > 0 ? " " : "") + word;
+                }
+                else
+                {
+                    lines.Add(currentLine.PadRight(maxLineLength));
+                    currentLine = word;
+                }
+            }
+
+            if (!string.IsNullOrWhiteSpace(currentLine))
+                lines.Add(currentLine.PadRight(maxLineLength));
+
+            return lines;
         }
 
         private void SafeDrawString(Graphics g, string text, Font font, Brush brush, float x, float y)
