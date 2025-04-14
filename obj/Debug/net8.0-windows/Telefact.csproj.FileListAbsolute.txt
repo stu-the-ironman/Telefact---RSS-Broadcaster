@@ -1,4 +1,3 @@
-F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Fonts\Modeseven.ttf
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\03 solid satin.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\05 frozen steam.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Afro Rock\07 range rover.mp3
@@ -52,6 +51,7 @@ F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Met
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Metropolis\16 - Laurie Johnson - Chase That Car.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Move with the Time\06 - Alan Hawkshaw - Undergroove.mp3
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Music\KPM - Move with the Time\13 - Alan Hawkshaw - Here Comes The Blues.mp3
+F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Assets\Fonts\Modeseven.ttf
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.exe
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.deps.json
 F:\Development\Teletext\Telefact\bin\Debug\net8.0-windows\Telefact.runtimeconfig.json

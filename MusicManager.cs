@@ -1,37 +1,35 @@
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using NAudio.Wave;
+using Telefact.Config;
 
-namespace Telefact
+namespace Telefact.Music
 {
     public class MusicManager
     {
         private readonly List<string> musicFiles;
+        private WaveOutEvent? waveOut;
+        private AudioFileReader? audioFileReader;
         private int currentTrackIndex;
-        private WaveOutEvent waveOut;
-        private AudioFileReader audioFileReader;
+        private readonly ConfigSettings config;
 
-        public MusicManager()
+        public MusicManager(ConfigSettings config)
         {
             Console.WriteLine("[MusicManager] DEBUG: Initializing MusicManager...");
-
-            // Check config before continuing
-            if (!ConfigManager.Settings.EnableMusic)
-            {
-                Console.WriteLine("[MusicManager] INFO: Music is disabled via config. Skipping initialization.");
-                return;
-            }
+            this.config = config;
 
             string musicDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Music");
 
             if (!Directory.Exists(musicDirectory))
             {
                 Console.WriteLine($"[MusicManager] ERROR: Music directory not found: {musicDirectory}");
+                musicFiles = new List<string>();
                 return;
             }
 
+            // Load all MP3 files from the directory and its subdirectories
             musicFiles = Directory.GetFiles(musicDirectory, "*.mp3", SearchOption.AllDirectories).ToList();
 
             if (musicFiles.Count == 0)
@@ -43,21 +41,12 @@ namespace Telefact
             Console.WriteLine($"[MusicManager] INFO: Found {musicFiles.Count} MP3 file(s).");
 
             waveOut = new WaveOutEvent();
-            waveOut.PlaybackStopped += WaveOutEvent_PlaybackStopped;
+            waveOut.PlaybackStopped += OnPlaybackStopped;
 
-            ShufflePlaylist();
-            PlayNextTrack();
-        }
-
-        private void ShufflePlaylist()
-        {
-            Console.WriteLine("[MusicManager] DEBUG: Shuffling playlist.");
-            Random rng = new Random();
-            musicFiles.Sort((a, b) => rng.Next(-1, 2));
             currentTrackIndex = 0;
         }
 
-        private void PlayNextTrack()
+        public void Play()
         {
             if (musicFiles.Count == 0)
             {
@@ -65,33 +54,30 @@ namespace Telefact
                 return;
             }
 
-            if (currentTrackIndex >= musicFiles.Count)
-            {
-                Console.WriteLine("[MusicManager] INFO: Playlist completed. Reshuffling...");
-                ShufflePlaylist();
-            }
+            PlayTrack(currentTrackIndex);
+        }
 
-            string nextTrack = musicFiles[currentTrackIndex];
-            Console.WriteLine($"[MusicManager] INFO: Now playing: {Path.GetFileName(nextTrack)}");
+        private void PlayTrack(int trackIndex)
+        {
+            string trackPath = musicFiles[trackIndex];
+            Console.WriteLine($"[MusicManager] INFO: Now playing: {Path.GetFileName(trackPath)}");
 
             try
             {
                 audioFileReader?.Dispose();
-                audioFileReader = new AudioFileReader(nextTrack);
+                audioFileReader = new AudioFileReader(trackPath);
 
-                waveOut.Stop();
-                waveOut.Init(audioFileReader);
-                waveOut.Play();
+                waveOut?.Stop();
+                waveOut?.Init(audioFileReader);
+                waveOut?.Play();
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"[MusicManager] ERROR: Failed to play track: {ex.Message}");
             }
-
-            currentTrackIndex++;
         }
 
-        private void WaveOutEvent_PlaybackStopped(object? sender, StoppedEventArgs e)
+        private void OnPlaybackStopped(object? sender, StoppedEventArgs e)
         {
             if (e.Exception != null)
             {
@@ -99,8 +85,9 @@ namespace Telefact
             }
             else
             {
-                Console.WriteLine("[MusicManager] DEBUG: Playback stopped. Moving to next track...");
-                PlayNextTrack();
+                Console.WriteLine("[MusicManager] INFO: Playback stopped. Moving to next track...");
+                currentTrackIndex = (currentTrackIndex + 1) % musicFiles.Count;
+                PlayTrack(currentTrackIndex);
             }
         }
     }

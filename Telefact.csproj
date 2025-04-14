@@ -7,16 +7,24 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <EnableDefaultCompileItems>true</EnableDefaultCompileItems>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <EnableNETAnalyzers>true</EnableNETAnalyzers>
     <NoWarn>CA1416;NETSDK1137</NoWarn>
     <Version>0.1.10</Version>
+    <StartupObject>Telefact.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Include="Assets\Fonts\Modeseven.ttf">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <Compile Include="Config\ConfigSettings.cs" />
+    <Compile Include="Config\ConfigManager.cs" />
+    <Compile Include="Config\EffectSettings.cs" />
+    <Compile Include="TeletextColors.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="MainForm.cs" />
+    <Compile Include="MusicManager.cs" />
+    <Compile Include="Rendering\Renderer.cs" />
+    <Compile Include="Config\Effects.cs" />
+    <Compile Include="MainForm.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -25,6 +33,12 @@
 
   <ItemGroup>
     <Content Include="Assets\Music\**\*.*">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Assets\Fonts\Modeseven.ttf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

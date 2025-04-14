@@ -2,16 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Text;
+using System.IO;
 using Telefact.Config;
+using Telefact.Rendering;
 
 namespace Telefact.Rendering
 {
     public class Renderer
     {
         private readonly ConfigSettings config;
-        private readonly Effects effects;
+        private readonly TeletextEffects effects;
         private readonly Font font;
-        private readonly PrivateFontCollection? fontCollection; // To keep font alive
+        private readonly PrivateFontCollection? fontCollection;
 
         private readonly Brush defaultBrush = Brushes.White;
         private readonly Brush serviceBrush = Brushes.Yellow;
@@ -22,7 +24,7 @@ namespace Telefact.Rendering
 
         private readonly int cellWidth;
         private readonly int cellHeight;
-        private readonly int pageWidth = 38; // visible characters, padding excluded
+        private readonly int pageWidth = 38;
         private readonly int leftPadding = 1;
         private readonly int rightPadding = 1;
         private readonly int topMargin = 18;
@@ -30,25 +32,26 @@ namespace Telefact.Rendering
         private int rollingScanlineY = 0;
         private int frameCount = 0;
 
-        public Renderer(ConfigSettings config, Effects effects, int cellWidth, int cellHeight)
+        public Renderer(ConfigSettings config, TeletextEffects effects, int cellWidth, int cellHeight, int fontSize = 20)
         {
             this.config = config;
             this.effects = effects;
             this.cellWidth = cellWidth;
             this.cellHeight = cellHeight;
 
-            try
+            // Load the custom font
+            string fontPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Fonts", "Modeseven.ttf");
+            if (File.Exists(fontPath))
             {
                 fontCollection = new PrivateFontCollection();
-                string fontPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Assets", "Fonts", "Modeseven.ttf");
                 fontCollection.AddFontFile(fontPath);
-                font = new Font(fontCollection.Families[0], 20f, FontStyle.Regular);
-                Log("Loaded custom font: Modeseven.ttf");
+                font = new Font(fontCollection.Families[0], fontSize);
+                Console.WriteLine($"[Renderer] INFO: Custom font loaded successfully with size {fontSize}pt.");
             }
-            catch (Exception ex)
+            else
             {
-                font = new Font(FontFamily.GenericMonospace, 20f, FontStyle.Regular);
-                Log($"Failed to load custom font, using fallback. Reason: {ex.Message}", isError: true);
+                font = new Font("Arial", fontSize); // Fallback font
+                Console.WriteLine($"[Renderer] ERROR: Failed to load custom font, using fallback. Reason: Unable to find the specified file.");
             }
         }
 
@@ -61,7 +64,7 @@ namespace Telefact.Rendering
             DrawTeletextHeader(g, startX: 0);
 
             // Draw the Teletext content with padding below the header
-            DrawContent(g, startX: 0, startY: topMargin + (2 * cellHeight)); // Add one line of padding
+            DrawContent(g, startX: 0, startY: topMargin + (2 * cellHeight));
 
             // Draw the Teletext footer
             DrawTeletextFooter(g, startX: 0, clientHeight: clientSize.Height);
@@ -85,14 +88,10 @@ namespace Telefact.Rendering
 
             int fullWidth = pageWidth + leftPadding + rightPadding;
 
-            // Calculate the total width of all text sections
             int totalTextWidth = pageNumber.Length + serviceName.Length + pageIndicator.Length + timestamp.Length;
-
-            // Calculate the remaining space for gaps
-            int totalGaps = 3; // Gaps between pageNumber, serviceName, pageIndicator, and timestamp
+            int totalGaps = 3;
             int gapWidth = (fullWidth - totalTextWidth) / totalGaps;
 
-            // Calculate starting positions for each section
             int pageNumberStart = 0;
             int serviceNameStart = pageNumberStart + pageNumber.Length + gapWidth;
             int pageIndicatorStart = serviceNameStart + serviceName.Length + gapWidth;
@@ -133,7 +132,7 @@ namespace Telefact.Rendering
 
         private void DrawContent(Graphics g, int startX, int startY)
         {
-            string rawText = "Teletext was a television service used in the UK and other countries from the 1970s to the 2010s. It allowed viewers to access additional information, such as news, sports, weather, and program guides, through their TV sets. The service was transmitted as a series of pages, each containing text-based information. Viewers accessed pages by entering numbers using their remote controls. Despite being replaced by digital services, Teletext played an important role in the development of interactive TV.";
+            string rawText = "Teletext was a television service used in the UK and other countries from the 1970s to the 2010s. It allowed viewers to access additional information, such as news, sports, weather, and program guides, through their TV sets.";
 
             List<string> lines = WrapTextToLines(rawText, pageWidth);
 

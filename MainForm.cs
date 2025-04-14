@@ -2,8 +2,8 @@ using System;
 using System.Drawing;
 using System.Windows.Forms;
 using Telefact.Config;
-using Telefact.Music;
-using Telefact.Rendering;
+using Telefact.Music;      // Ensure this matches the namespace of MusicManager
+using Telefact.Rendering; // Ensure this matches the namespace of Renderer
 
 namespace Telefact
 {
@@ -18,6 +18,8 @@ namespace Telefact
         {
             InitializeComponent();
             Console.WriteLine("[MainForm] DEBUG: Initializing MainForm...");
+            Console.WriteLine("Patch branch code");
+            Console.WriteLine("Resolved code from both branches");
 
             // Load configuration
             ConfigManager.LoadConfig();
@@ -28,7 +30,7 @@ namespace Telefact
             int cellHeight = config.CellHeight; // Retrieve from config
 
             // Initialize Effects
-            var effects = new Effects(
+            var effects = new TeletextEffects(
                 config.Effects,
                 cols: 40, // Number of columns
                 rows: 24, // Number of rows
@@ -37,7 +39,7 @@ namespace Telefact
             );
 
             // Initialize Renderer with configurable cell dimensions
-            renderer = new Renderer(config, effects, cellWidth, cellHeight);
+            renderer = new Renderer(config, effects, cellWidth, cellHeight, fontSize: 20);
 
             // Initialize MusicManager if music is enabled
             if (config.EnableMusic)
